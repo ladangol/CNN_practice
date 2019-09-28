@@ -2,7 +2,7 @@ import numpy as np
 import PIL
 from PIL import Image
 import os, glob
-from random import shuffle
+import random
 #import keras
 #from keras.preprocessing.image import load_img
 #from keras.preprocessing.image import img_to_array
@@ -13,7 +13,8 @@ def loadimg_savenpy(path, img_size):
     X=[]
     y=[]
     files = glob.glob(path+"*.jpg")
-    shuffle(files)
+    random.seed(42)
+    random.shuffle(files)
     for f_name in files:
         label = categories.index('dog')
         if f_name.find('cat') != -1:
@@ -23,7 +24,7 @@ def loadimg_savenpy(path, img_size):
         image = np.asarray(image).astype('float32')/255
         X.append(image)
         y.append(label)
-        print(y)
+        #print(y)  #to check if the label is set correctly
     X,y = np.array(X), np.array(y)
     #randomize = np.arange(len(X))
     #np.random.shuffle(randomize)
