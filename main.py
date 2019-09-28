@@ -8,11 +8,11 @@ batch_size = 32
 
 do_loadimage = False
 do_train = False
-do_predit = True
+do_predict = True
 
 if do_loadimage:
     loadimg_savenpy('train/', IMG_SIZE)
 if do_train:
     train('dogs_vs_cats_photos.npy', 'dogs_vs_cats_labels.npy', batch_size, epochs, num_classes)
 if do_predict:
-    predict(model_path = 'models/weights.best.hdf5.model', 'test/')
+    predict(model_path = 'models/weights.best.hdf5.model',testfolder_path = 'test1/', img_size = IMG_SIZE)
