@@ -14,7 +14,7 @@ def train(X_npyfile, y_npyfile, batch_size, epochs, num_classes):
     print('X_test shape', X_test.shape)
     print('y_train shape', y_train.shape)
 
-    model = define_model(input_shape = X_train.shape[1:], num_classes = num_classes)
+    model = define_model(input_shape = X_train.shape[1:], num_classes)
 
     NAME = f'dogs-vs-cats-cnn-{int(time.time())}'
     filepath = "Model-{epoch:02d}-{val_acc:.3f}"  # unique file name that will include the epoch and the validation acc for that epoch
