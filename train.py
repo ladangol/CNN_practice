@@ -31,11 +31,22 @@ def train(X_npyfile, y_npyfile, batch_size, epochs, num_classes):
           validation_data = (X_test, y_test), epochs=epochs, batch_size=batch_size, callbacks=callbacks_list,
           verbose=0, shuffle = True)
 
+    summarize_diagnostics(history)
     return history
-    # evaluate the network
-    #print("[INFO] evaluating network...")
-    #predictions = model.predict(testX, batch_size=32)
-    #print(classification_report(testY.argmax(axis=1),
-    #                            predictions.argmax(axis=1), target_names=num_classes))
 
-    #model.save(save_model)
+
+def summarize_diagnostics(history):
+	# plot loss
+	pyplot.subplot(211)
+	pyplot.title('Cross Entropy Loss')
+	pyplot.plot(history.history['loss'], color='blue', label='train')
+	pyplot.plot(history.history['val_loss'], color='orange', label='test')
+	# plot accuracy
+	pyplot.subplot(212)
+	pyplot.title('Classification Accuracy')
+	pyplot.plot(history.history['acc'], color='blue', label='train')
+	pyplot.plot(history.history['val_acc'], color='orange', label='test')
+	# save plot to file
+	filename = 'dogs_vs_cats_cnn_training'
+	pyplot.savefig(filename + '_plot.png')
+	pyplot.close()
