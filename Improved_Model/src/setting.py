@@ -1,3 +1,4 @@
+import time
 IMG_SIZE = 124
 BATCH_SIZE = 64
 EPOCHS = 100
