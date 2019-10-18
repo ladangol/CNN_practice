@@ -2,7 +2,7 @@
 from keras.models import load_model
 import sys, os
 from sklearn.metrics import classification_report, confusion_matrix
-from setting import BATCH_SIZE,CLASSES
+from setting import BATCH_SIZE,CLASSES, NUM_CLASSES
 import matplotlib.pyplot as plt
 import numpy as np
 import itertools
@@ -29,7 +29,6 @@ def evaluate():
     if normalize:
         confusion_mat = confusion_mat.astype('float') / confusion_mat.sum(axis=1)[:, np.newaxis]
 
-
     plt.figure(figsize = (6,6))
     plt.imshow(confusion_mat, interpolation='nearest', cmap=plt.cm.Blues)
     plt.title('Confusion matrix')
@@ -38,7 +37,7 @@ def evaluate():
     plt.xticks(tick_marks, CLASSES, rotation=45)
     plt.yticks(tick_marks, CLASSES)
 
-    thresh = confusion_mat.max() / 1.5 if normalize lese confusion_mat.max()/ 2
+    thresh = confusion_mat.max() / 1.5 if normalize else confusion_mat.max()/ 2
     for i, j in itertools.product(range(confusion_mat.shape[0]), range(confusion_mat.shape[1])):
         if normalize:
             plt.text(j, i, "{:0.4f}".format(confusion_mat[i, j]),
@@ -52,10 +51,10 @@ def evaluate():
     plt.tight_layout()
     plt.ylabel('Actual')
     plt.xlabel('Predicted label\naccuracy={:0.4f}; misclass={:0.4f}'.format(accuracy, misclass))
-    confusion_matrix_plot_name = os.join.path('images', 'confusion_matrix_plot.png')
+    confusion_matrix_plot_name = os.path.join('..','images', 'confusion_matrix_plot.png')
     plt.savefig(confusion_matrix_plot_name)
 
     plt.show()
-    confusion_matrix_file_name = get_path('logs', 'confusion_matrix_file.txt')
+    confusion_matrix_file_name = os.path.join('..','logs', 'confusion_matrix_file.txt')
     with open(confusion_matrix_file_name, 'w') as f:
         f.write(np.array2string(confusion_mat, separator=', '))
