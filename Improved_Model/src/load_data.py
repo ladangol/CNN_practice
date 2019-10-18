@@ -39,8 +39,8 @@ and on windows it is
     train\\cat*.jpg
   """
 
-cats_to_import = glob.glob(os.path.join('train', 'cat*.jpg'))
-dogs_to_import = glob.glob(os.path.join('train', 'dog*.jpg'))
+cats_to_import = glob.glob(os.path.join('..','train', 'cat*.jpg'))
+dogs_to_import = glob.glob(os.path.join('..','train', 'dog*.jpg'))
 
 """
 Creating pool of worker processes

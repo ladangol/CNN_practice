@@ -20,7 +20,7 @@ def summarize_diagnostics(history):
 
     pyplot.tight_layout()
     #Save plot to a file
-    filename = os.path.join('images','dogs_vs_cats_cnn_training')
+    filename = os.path.join('..','images','dogs_vs_cats_cnn_training')
     pyplot.savefig(filename+'_plot.png')
     pyplot.close()
 
@@ -44,7 +44,7 @@ def train():
     print("X shape", X.shape)
     print("y shape", y.shape)
 
-    X_train, X_test, y_train, y_test = train_test_split(X,y, test_size="0.2", shuffle = "True", random_state = 42)
+    X_train, X_test, y_train, y_test = train_test_split(X,y, test_size=0.2, shuffle = "True", random_state = 42)
     np.save('X_test.npy', X_test)
     np.save('y_test.npy', y_test)
     model = define_model(input_shape=X_train.shape[1:], num_classes= NUM_CLASSES)
@@ -52,18 +52,21 @@ def train():
     #unique file name that will include the epoch and the validation acc for that epoch
     filepath = "Model-{epoch:02d}-{val_acc:.3f}"
     #saves only the best one at each epoch
-    checkpoint = ModelCheckpoint(os.join.path('models','{}.model').format(filepath, monitor = 'val_loss',
+    checkpoint = ModelCheckpoint(os.path.join('..','models','{}.model').format(filepath, monitor = 'val_loss',
     verbos = 1, save_best_only=True, mode = 'min'))
 
 
     log_file_name = '{}'.format(NAME)
-    log_path = os.join.path('logs', log_file_name)
+    log_path = os.path.join('..','logs', log_file_name)
     tensorboard = TensorBoard(log_dir = log_path)
 
-    csv_logger = CSVLogger(os.join.path('log', 'dogs_vs_cats_history_log.csv'), append = True)
+    csv_logger = CSVLogger(os.path.join('..','logs', 'dogs_vs_cats_history_log.csv'), append = True)
 
     callback_list = [checkpoint, tensorboard, csv_logger]
 
     history = model.fit(X_train, y_train, validation_data=(X_test, y_test), epochs = EPOCHS, batch_size=BATCH_SIZE, callbacks = callback_list, verbose = 1, shuffle=True)
 
-    summerize_diagnostics(history)
+    summarize_diagnostics(history)
+
+print('Start Training....')
+train()
