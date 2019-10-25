@@ -8,8 +8,9 @@ import scipy as sp
 
 model = load_model(sys.argv[1])
 image_path = str(sys.argv[2])
+last_conv_layer_name = 'conv2d_6'
 
-def make_prediction():
+def make_prediction(model, image_path, last_conv_layer_name):
     gap_weights = model.layers[-1].get_weights()[0]
     image = np.array(Image.open(image_path).resize((IMG_SIZE,IMG_SIZE)), dtype = "float32")/255.
     #image shape is IMG_SIZE*IMG_SIZE*3
@@ -20,7 +21,7 @@ def make_prediction():
     and for a layer output:
         Tensor("conv2d_6_1/Relu:0", shape=(?, 23, 23, 128), dtype=float32)
     """
-    cam_model = Model(inputs= model.input, outputs =(model.get_layer('conv2d_6').output, model.layers[-1].output))
+    cam_model = Model(inputs= model.input, outputs =(model.get_layer(last_conv_layer_name).output, model.layers[-1].output))
     #cam_model.summary()
     """
     Note that the cam model is same as the model but it has two outputs: along with the final predictions
@@ -59,4 +60,4 @@ def make_prediction():
     plt.title('Class Activation Map')
     plt.show()
 
-make_prediction()
+make_prediction(model, image_path, last_conv_layer_name)
