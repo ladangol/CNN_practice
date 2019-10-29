@@ -4,8 +4,11 @@ from keras.callbacks import TensorBoard, ModelCheckpoint, CSVLogger
 from matplotlib import pyplot
 from define_model import define_model
 import time
-import os
+import os,sys
 from setting import BATCH_SIZE, EPOCHS, NUM_CLASSES, cats_np_filename, dogs_np_filename,NAME
+from transferlearning_vgg16_for_CAM import define_pretrained_weights_vgg16
+
+
 def summarize_diagnostics(history):
     #plot loss
     pyplot.subplot(2,1,1)
@@ -24,7 +27,7 @@ def summarize_diagnostics(history):
     pyplot.savefig(filename+'_plot.png')
     pyplot.close()
 
-def train():
+def train(transfer_or_not):
     cats = np.load(cats_np_filename)
     dogs = np.load(dogs_np_filename)
 
@@ -45,10 +48,15 @@ def train():
     print("y shape", y.shape)
 
     X_train, X_test, y_train, y_test = train_test_split(X,y, test_size=0.2, shuffle = "True", random_state = 42)
-    np.save('X_test.npy', X_test)
-    np.save('y_test.npy', y_test)
-    model = define_model(input_shape=X_train.shape[1:], num_classes= NUM_CLASSES)
+    #np.save('X_test.npy', X_test)
+    #np.save('y_test.npy', y_test)
 
+    if not transfer_or_not:
+        model = define_model(input_shape=X_train.shape[1:], num_classes= NUM_CLASSES)
+    else:
+        print("In VGG")
+        model = define_pretrained_weights_vgg16()
+        EPOCHS = 200
     #unique file name that will include the epoch and the validation acc for that epoch
     filepath = "Model-{epoch:02d}-{val_acc:.3f}"
     #saves only the best one at each epoch
@@ -60,7 +68,8 @@ def train():
     log_path = os.path.join('..','logs', log_file_name)
     tensorboard = TensorBoard(log_dir = log_path)
 
-    csv_logger = CSVLogger(os.path.join('..','logs', 'dogs_vs_cats_history_log.csv'), append = True)
+    csv_log_name = 'dogs_vs_cats_history_log_vgg.csv' if transfer_or_not else 'dogs_vs_cats_history_log.csv'
+    csv_logger = CSVLogger(os.path.join('..','logs', csv_log_name), append = True)
 
     callback_list = [checkpoint, tensorboard, csv_logger]
 
@@ -68,5 +77,10 @@ def train():
 
     summarize_diagnostics(history)
 
+transfer_or_not =sys.argv[1] == "True"
+#assert isinstance(transfer_or_not, bool),
+#raise TypeError('param should be a bool')
+
 print('Start Training....')
-train()
+#print(str(transfer_or_not))
+train(transfer_or_not)
