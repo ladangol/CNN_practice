@@ -7,8 +7,10 @@ from setting import MODEL_PATH, TEST_PATH, IMG_SIZE, CLASSES
 from load_data import import_image
 
 def predict(model_path, testfolder_path, img_size):
+    print("Loading the model located at ", model_path)
     model = load_model(model_path)
     print(model.summary)
+    print("model is loaded")
     for img_p in glob.glob(testfolder_path+"*.jpg"):
         img= import_image(img_p)
         pred = model.predict(img.reshape(-1, img_size, img_size, 3))

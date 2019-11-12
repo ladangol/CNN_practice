@@ -30,7 +30,7 @@ def summarize_diagnostics(history):
 def train(transfer_or_not):
     cats = np.load(cats_np_filename)
     dogs = np.load(dogs_np_filename)
-
+    print(EPOCHS)
     #adding the label in the one-hot encoding
     #According to kaggle 1= dog, 0 = cat
     #Recal [5]*3 is [5,5,5]
@@ -56,7 +56,7 @@ def train(transfer_or_not):
     else:
         print("In VGG")
         model = define_pretrained_weights_vgg16()
-        EPOCHS = 200
+        #EPOCHS = 200
     #unique file name that will include the epoch and the validation acc for that epoch
     filepath = "Model-{epoch:02d}-{val_acc:.3f}"
     #saves only the best one at each epoch
