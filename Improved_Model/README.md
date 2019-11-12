@@ -21,18 +21,25 @@ The dogs vs cats dataset can ve downlaoded from kaggle
 https://www.kaggle.com/c/dogs-vs-cats/data
 
 ## Data Preprocessing:
+The data preprocessing code is inspired by this video:
+https://www.youtube.com/watch?v=JzXyDoaaa8s&t=1117s
 
+It reads the dogs and cats images using multiprocessing package in python and resize the images and normalize the pixel values. Then save the dog and cat images as numpy arrays on disk.
 
 ## Model:
+
 
 ## Training:
 
 
 ## Evaluation:
 
+
 ## Transfer Learning:
 
+
 ## Class Activation Map:
+
 
 ## How to run:
 
